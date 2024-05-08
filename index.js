@@ -19,6 +19,22 @@ app.get('/users', (req,res)=>{
     res.json(tempDbReturnedUser)
 })
 
+app.get('/middleware-usage', 
+    (req, res, next) => {
+        //middleware -> manipulate the req
+        console.log('I am currently in the middleware');
+        req.manipulated = true;
+        next();
+    }, 
+    (req, res)=>{
+        const didMiddlewareActuallyWork = req.manipulated;
+        console.log(JSON.stringify(didMiddlewareActuallyWork));
+        //actual logic
+        console.log('I am the actual logic');
+        res.send('Actual logic returned.')
+    }
+)
+
 app.listen(PORT, ()=>{
     // console.log(process)
     console.log(`server is up and running at port ${PORT}`)
