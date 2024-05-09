@@ -3,8 +3,8 @@ require('dotenv').config()
 const app = express();
 const PORT =  process.env.PORT || 3000;
 
+app.use(express.urlencoded({extended: false}));
 app.use(express.json())
-
 
 app.get('/people/:id/:storeId', (req, res) => {
     const paramss = req.params;
@@ -130,7 +130,8 @@ app.get('/three/:userId', isSeller, (req, res) => {
 //understanding express middlewares -> 
 
 app.post('/user', (req, res)=>{
-    console.log(req.body)
+    console.log(req.body);
+    console.log(req.body.testkey)
     //get the user body from the req
     //append it onto the db 
     res.status(201).json({message: 'user added successfully'})
