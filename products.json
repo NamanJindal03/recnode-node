@@ -1,12 +1,1 @@
-[
-    {
-        "id": 1,
-        "productName": "laptop",
-        "price": "650$"
-    },
-    {
-        "id": 2,
-        "productName": "mobile",
-        "price": "1100$"
-    }
-]
+[{"id":4,"productName":"charger","price":"50$"},{"id":5,"productName":"bottle","price":"15$"},{"id":6,"productName":"charger","price":"50$"},{"id":7,"productName":"charger","price":"50$"},{"id":8,"productName":"charger","price":"50$"}]
