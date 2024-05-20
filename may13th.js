@@ -94,6 +94,29 @@ app.put('/products/:id', async (req, res)=>{
     return res.status(200).json({ message: 'product updated succesfully'})
 })
 
+app.patch('/products/:id', async (req, res)=>{
+    const {id} = req.params;
+    const newBody = req.body;
+    const data = await readFileData();
+
+    const isProductPresent = data.find((product)=> product.id == id);
+    if(!isProductPresent){
+        return res.status(400).json({error: 'product with such id does not exist'})  
+    }
+    const oldProducts = data.filter((product)=>product.id != id);
+    const productToBeUpdatedArray = data.filter((product)=>product.id == id);
+
+    const productToBeUpdated = productToBeUpdatedArray[0];
+    console.log(productToBeUpdated);
+    console.log(newBody);
+    Object.assign(productToBeUpdated, newBody);
+
+    oldProducts.push(productToBeUpdated);
+    await fs.writeFile(path.join(__dirname, PRODUCT_FILE_NAME), JSON.stringify(oldProducts));
+    return res.status(200).json({ message: 'product updated succesfully'})
+
+})
+
 app.listen(PORT, ()=>{
     // console.log(process)
     console.log(`server is up and running at port ${PORT}`)
