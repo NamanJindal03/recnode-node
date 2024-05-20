@@ -21,12 +21,6 @@ function handleRequests(req, res){
             // res.end('sample')
         }   
     })
-
-
-
-
-
-   
 }
 
 function handleRoutes(req, res){

@@ -10,9 +10,15 @@ app.use(express.json()); //middleware to get the body
 
 const PRODUCT_FILE_NAME = 'products.json'
 
-app.get('/products', async (req, res) => {
+async function readFileData(){
     const data = await fs.readFile(path.join(__dirname, PRODUCT_FILE_NAME));
-    return res.json(JSON.parse(data))
+    return JSON.parse(data);
+}
+
+app.get('/products', async (req, res) => {
+    const data = await readFileData();
+    return res.json(data)
+    
     // console.log(data);
 })
 
@@ -46,7 +52,7 @@ app.put('/products', async (req, res) => {
     try{
         const data = await fs.readFile(path.join(__dirname, PRODUCT_FILE_NAME));
         let dataArr = JSON.parse(data);
-        const isDuplicate = dataArr.find((product)=> product.id === newProduct.id);
+        const isDuplicate = dataArr.find((product)=> product.id == newProduct.id);
         if(isDuplicate){
             return res.status(400).json({error: 'product already exists'})  
         }
@@ -60,6 +66,33 @@ app.put('/products', async (req, res) => {
 
 })
 
+app.get('/products/:id', async (req, res) => {
+    const {id} = req.params;
+
+    const data = await readFileData();
+    console.log(data)
+    const isProductPresent = data.find((product)=> product.id == id);
+    if(!isProductPresent){
+        return res.status(400).json({error: 'product with such id does not exist'})  
+    }
+    return res.status(200).json({product: isProductPresent, message: 'success'})
+
+})
+
+app.put('/products/:id', async (req, res)=>{
+    const {id} = req.params;
+    const {productName, price} = req.body;
+
+    const data = await readFileData();
+    const isProductPresent = data.find((product)=> product.id == id);
+    if(!isProductPresent){
+        return res.status(400).json({error: 'product with such id does not exist'})  
+    }
+    const newData = data.filter((product)=>product.id != id);
+    newData.push({id, productName, price})
+    await fs.writeFile(path.join(__dirname, PRODUCT_FILE_NAME), JSON.stringify(newData));
+    return res.status(200).json({ message: 'product updated succesfully'})
+})
 
 app.listen(PORT, ()=>{
     // console.log(process)
