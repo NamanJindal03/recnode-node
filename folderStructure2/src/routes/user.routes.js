@@ -8,5 +8,10 @@ router.route('/')
 
 router.route('/:userId')
     .get(userController.getUserById)
+    .put(userController.updateUser)
+    .delete(userController.deleteUser)
+
+router.route('/best-result/:name')
+    .get(userController.getUserByName)
 
 module.exports = router;
