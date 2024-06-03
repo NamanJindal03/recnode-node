@@ -4,34 +4,31 @@ const userSchema = new mongoose.Schema(
     {
         rollNumber: {
             type: Number,
-            required: true
         },
         name: {
             type: String, 
-            required: true
         },
         status: {
             type: String,
-            required: false
         },
         email: {
-            type: String, 
-            required: true,
-            unique: true
+            type: String,
         },
         age: {
             type: Number,
-            required: true,
             min: 18,
             max: 150
-        } 
+        },
+        pastPasswords: {
+            type: [String],
+        },
+        isKycDone: {
+            type: String,
+            enum: ['pending', 'progress', 'complete'],
+            default: 'pending'
+        }
     },
     {timestamps: true}
 )
 
-// userSchema.pre('save', function (data, next){
-//     //manipulating the password 
-
-// })
-
-module.exports = mongoose.model('User', userSchema );
+module.exports = mongoose.model('User2', userSchema );

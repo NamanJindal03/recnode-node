@@ -14,4 +14,11 @@ router.route('/:userId')
 router.route('/best-result/:name')
     .get(userController.getUserByName)
 
+
+//Experimental 
+router.route('/test/user2model')
+    .post(userController.checkPastPass)
+
+router.route('/')
+
 module.exports = router;
